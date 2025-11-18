@@ -9,29 +9,32 @@
     <title>products</title>
 </head>
 <body>
-    <div layout:fragment="content1" >
-        <form method="post" th:action=" @{/saveProduct}" class="w-50 mx-auto mt-5 p-3 border border-primary rounded
-        shadow p-3 mb-5 bg-body rounded"  >
-            <div class="mb-3">
-                <label for="nameProduct" class="form-label">Name</label>
-                <input type="text" class="form-control" id="nameProduct" th:value="${product.name}"
-                name="name">
-                <span class="text-danger" th:errors="${product.name}"></span>
-            </div>
-            <div class="mb-3">
-                <label for="priceProduct" class="form-label">Price</label>
-                <input type="text" class="form-control" id="priceProduct" th:value="${product.price}"
-                name="price">
-                <span class="text-danger" th:errors="${product.price}"></span>
-            </div>
-            <div class="mb-3">
-                <label for="quantityProduct" class="form-label">Quantity</label>
-                <input type="text" class="form-control" id="quantityProduct" th:value="${product.quantity}"
-                name="quantity">
-                <span class="text-danger" th:errors="${product.quantity}"></span>
-            </div>
-            <input type="submit" value="save" class="btn btn-primary">
-        </form>
-    </div>
+<div layout:fragment="content1" >
+    <form method="post" th:action="@{/saveProduct}" th:object="${product}"
+          class="w-50 mx-auto mt-5 p-3 border border-primary rounded shadow p-3 mb-5 bg-body rounded">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mb-3">
+            <label for="nameProduct" class="form-label">Name</label>
+            <input type="text" class="form-control" id="nameProduct" th:field="*{name}">
+            <span class="text-danger" th:errors="*{name}"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="priceProduct" class="form-label">Price</label>
+            <input type="text" class="form-control" id="priceProduct" th:field="*{price}">
+            <span class="text-danger" th:errors="*{price}"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="quantityProduct" class="form-label">Quantity</label>
+            <input type="text" class="form-control" id="quantityProduct" th:field="*{quantity}">
+            <span class="text-danger" th:errors="*{quantity}"></span>
+        </div>
+
+        <input type="submit" value="save" class="btn btn-primary">
+    </form>
+</div>
 </body>
 </html>

@@ -25,8 +25,11 @@
                   <td th:text="${p.name}"></td>
                   <td th:text="${p.price}"></td>
                   <td th:text="${p.quantity}"></td>
-                  <td>
+                  <td style="width: 80px">
                       <a onclick="return confirm('are you sure ?')" class="btn btn-danger" th:href="@{/delete(id=${p.id})}">Delete</a>
+                  </td>
+                  <td>
+                      <a onclick="return confirm('want you update that product?')" class="btn btn-primary" th:href="@{/update(id=${p.id})}">Update</a>
                   </td>
               </tr>
             </tbody>

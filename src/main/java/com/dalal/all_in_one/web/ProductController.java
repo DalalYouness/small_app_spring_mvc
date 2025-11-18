@@ -48,12 +48,22 @@ public class ProductController {
     @PostMapping("/saveProduct")
     public String saveProduct(@Valid Product product, BindingResult bindingResult, Model  model) {
         if(bindingResult.hasErrors()) {
-            return "/new-product";
+            return "new-product";
         }
         productRepository.save(product);
         return "redirect:/products";
     }
 
+    @GetMapping("/update")
+    public String update(@RequestParam(name = "id") Long id, Model  model) {
+        Product product = productRepository.findById(id).get();
+        model.addAttribute("product", product);
+        return "new-product";
+    }
 
+    /*
+    *  toujours une requette post ou bien une supression le retour c'est une redirection vers une get
+    *
+    * */
 
 }
