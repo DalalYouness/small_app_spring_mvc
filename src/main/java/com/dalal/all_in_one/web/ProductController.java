@@ -2,6 +2,7 @@ package com.dalal.all_in_one.web;
 
 import com.dalal.all_in_one.entities.Product;
 import com.dalal.all_in_one.repositories.ProductRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,6 +67,16 @@ public class ProductController {
         return "not-authorized";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "login";
+    }
     /*
     *  toujours une requette post ou bien une supression le retour c'est une redirection vers une get
     *

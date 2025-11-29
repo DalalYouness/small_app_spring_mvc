@@ -58,10 +58,11 @@ public class SecuConfig {
                 //csrf(Customizer.withDefaults()) // c'est ca la par default
                 //.csrf(csrf -> csrf.disable())
                 // on le desactive seulement si on travaille dans le mode stateless sinon c'est dangereux dans le cas de statfull de le desactiver
-                .formLogin(Customizer.withDefaults())
+                //.formLogin(Customizer.withDefaults())
+                .formLogin(frml -> frml.loginPage("/login").permitAll()) // darouri nkhaliha b le nom login pour spring security darouri permit all bach mayhbsnich hita ana dayr any request katlb authe auto ta logout ghatmchi khasni nsaybha
                 .authorizeHttpRequests(ar -> ar.requestMatchers("/products").hasRole("USER"))
                 .authorizeHttpRequests(ar -> ar.requestMatchers("/delete","/saveProduct","/update").hasRole("ADMIN"))
-                .authorizeHttpRequests(ar -> ar.requestMatchers("/").permitAll())
+                .authorizeHttpRequests(ar -> ar.requestMatchers("/","/webjars/**").permitAll())
                 .authorizeHttpRequests(ar -> ar.anyRequest().authenticated())
                 .exceptionHandling(eh -> eh.accessDeniedPage("/notAuthorized"))
                 .build();
