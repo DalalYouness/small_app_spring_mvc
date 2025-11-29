@@ -20,7 +20,6 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-
     @GetMapping("/")
     public String home() {
         return "redirect:/products";
@@ -33,7 +32,8 @@ public class ProductController {
         return "products";
     }
 
-    @GetMapping("/delete")
+    //pour envoyer l'url de delete dans un formulaire pour garde nous meme contre l'attack csrf parce que il ne fonctionne pas avec get
+    @PostMapping("/delete")
     public String delete(@RequestParam(name = "id") Long id) {
         productRepository.deleteById(id);
         return "redirect:/products";
@@ -59,6 +59,11 @@ public class ProductController {
         Product product = productRepository.findById(id).get();
         model.addAttribute("product", product);
         return "new-product";
+    }
+
+    @GetMapping("/notAuthorized")
+    public String notAuthorized() {
+        return "not-authorized";
     }
 
     /*

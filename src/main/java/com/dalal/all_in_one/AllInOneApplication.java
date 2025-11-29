@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Bean;
 
 import java.math.BigDecimal;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+//@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication()
 public class AllInOneApplication  {
 
 

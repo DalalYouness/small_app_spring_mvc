@@ -1,0 +1,183 @@
+@startuml
+' =========================================
+' Diagramme de classes complet pour cabinet médical
+' avec cardinalités/ordinalités précises
+' =========================================
+
+' ----------------------------
+' Compte / Utilisateur / Role / Permission
+' ----------------------------
+class Compte {
+    +id: Long
+    +nom: String
+    +prenom: String
+    +telephone: String
+    +email: String
+    +identifiant: String
+    +motDePasse: String
+    +dateCreation: datetime
+    +statut: String
+    +dateSuppression: datetime
+}
+
+class Utilisateur {
+    +id: Long
+    +identifiant: String
+}
+
+class Role {
+    +id: Long
+    +nom: String
+}
+
+class Permission {
+    +id: Long
+    +nom: String
+}
+
+class Role_Permission {
+}
+
+' Relations avec cardinalités exactes
+Compte "1..1" --> "1..1" Utilisateur : appartient à
+Utilisateur "1..1" --> "1..1" Role : possède
+Role "1..1" --> "0..*" Role_Permission : a
+Permission "1..1" --> "0..*" Role_Permission : est lié à
+Role_Permission "1..*" --> "1..1" Role
+Role_Permission "1..*" --> "1..1" Permission
+
+' ----------------------------
+' Patient et Dossier médical
+' ----------------------------
+class Patient {
+    +id: Long
+    +nom: String
+    +prenom: String
+    +dateNaissance: date
+    +sexe: String
+    +contact: String
+    +adresse: String
+}
+
+class DossierMedical {
+    +id: Long
+    +antecedents: String
+    +allergies: String
+    +notes: String
+}
+
+Patient "1..1" --> "1..1" DossierMedical : contient
+DossierMedical "1..1" --> "1..1" Patient : appartient à
+
+' ----------------------------
+' Rendez-vous
+' ----------------------------
+class RendezVous {
+    +id: Long
+    +date: datetime
+    +etat: String
+    +type: String
+}
+
+Patient "1..1" --> "0..*" RendezVous : a
+RendezVous "1..1" --> "1..1" Patient : concerne
+
+Utilisateur "1..1" --> "0..*" RendezVous : crée
+RendezVous "1..1" --> "1..1" Utilisateur : créé par
+
+' ----------------------------
+' Consultation
+' ----------------------------
+class Consultation {
+    +id: Long
+    +date: datetime
+    +diagnostic: String
+    +notes: String
+}
+
+Patient "1..1" --> "0..*" Consultation : a
+Consultation "1..1" --> "1..1" Patient : concerne
+
+Utilisateur "1..1" --> "0..*" Consultation : fait
+Consultation "1..1" --> "1..1" Utilisateur : réalisé par
+
+' ----------------------------
+' Séance
+' ----------------------------
+class Seance {
+    +id: Long
+    +date: datetime
+    +type: String
+    +notes: String
+}
+
+Patient "1..1" --> "0..*" Seance : a
+Seance "1..1" --> "1..1" Patient : concerne
+
+Utilisateur "1..1" --> "0..*" Seance : réalise
+Seance "1..1" --> "1..1" Utilisateur : réalisé par
+
+Consultation "0..1" --> "0..*" Seance : génère
+Seance "0..*" --> "0..1" Consultation : issue de
+
+' ----------------------------
+' Acte Médical
+' ----------------------------
+class ActeMedical {
+    +id: Long
+    +nom: String
+    +prix: Float
+}
+
+Consultation "0..*" --> "0..*" ActeMedical : contient
+ActeMedical "0..*" --> "0..*" Consultation : fait partie de
+
+Seance "0..*" --> "0..*" ActeMedical : contient
+ActeMedical "0..*" --> "0..*" Seance : fait partie de
+
+' ----------------------------
+' Ordonnance et Médicament
+' ----------------------------
+class Ordonnance {
+    +id: Long
+    +date: datetime
+    +instructions: String
+}
+
+class Medicament {
+    +id: Long
+    +nom: String
+    +dosage: String
+    +quantite: int
+}
+
+Consultation "1..1" --> "0..1" Ordonnance : génère
+Ordonnance "0..1" --> "1..1" Consultation : issue de
+
+Ordonnance "1..1" --> "0..*" Medicament : contient
+Medicament "1..1" --> "1..1" Ordonnance : appartient à
+
+' ----------------------------
+' Facturation et Paiement
+' ----------------------------
+class Facturation {
+    +id: Long
+    +total: Float
+    +etat: String
+    +dateFacture: datetime
+}
+
+class Paiement {
+    +id: Long
+    +montant: Float
+    +modePaiement: String
+    +datePaiement: datetime
+}
+
+Consultation "1..1" --> "1..1" Facturation : génère
+Facturation "1..1" --> "1..1" Consultation : issue de
+
+Facturation "1..1" --> "0..*" Paiement : reçoit
+Paiement "1..1" --> "1..1" Facturation : concerne
+
+@enduml
